@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Notepad() {
-  const { id } = useParams(); // Get ID from URL
+  const { id } = useParams();
   const [text, setText] = useState("");
   const [debouncedText, setDebouncedText] = useState(text);
   const BASE_URL = "http://localhost:5000";
@@ -12,11 +14,16 @@ export default function Notepad() {
     async function fetchData() {
       try {
         const response = await fetch(`${BASE_URL}/${id}`);
-        if (!response.ok) throw new Error("Network response was not ok");
+        if (!response.ok) throw new Error("Failed to fetch note");
 
         const data = await response.json();
-        setText(data.text);
+        if (data.text) {
+          setText(data.text);
+        } else {
+          toast.warn("Empty note. Start typing!", { position: "top-right" });
+        }
       } catch (error) {
+        toast.error("Error fetching note!", { position: "top-right" });
         console.error("Fetch error:", error);
       }
     }
@@ -29,7 +36,7 @@ export default function Notepad() {
       if (debouncedText !== text) {
         setDebouncedText(text);
       }
-    }, 1000); // 1 sec delay
+    }, 1000);
 
     return () => clearTimeout(handler);
   }, [text]);
@@ -45,12 +52,19 @@ export default function Notepad() {
 
   const saveToDatabase = async (newText) => {
     try {
-      await fetch(`${BASE_URL}/update/${id}`, {
+      const response = await fetch(`${BASE_URL}/update/${id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: newText }),
       });
+
+      if (response.ok) {
+        toast.success("Saved successfully!", { position: "bottom-right" });
+      } else {
+        throw new Error("Failed to save");
+      }
     } catch (error) {
+      toast.error("Error saving note!", { position: "bottom-right" });
       console.error("Save error:", error);
     }
   };
@@ -63,6 +77,7 @@ export default function Notepad() {
         className="w-full h-[90vh] p-4 text-lg bg-[#112240] text-white placeholder-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
         placeholder="Start typing..."
       />
+      <ToastContainer />
     </div>
   );
 }
