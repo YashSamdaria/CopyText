@@ -59,7 +59,7 @@ export default function Notepad() {
       });
 
       if (response.ok) {
-        toast.success("Saved successfully!", { position: "bottom-right" });
+       // toast.success("Saved successfully!", { position: "bottom-right" });
       } else {
         throw new Error("Failed to save");
       }
