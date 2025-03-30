@@ -7,7 +7,7 @@ export default function Notepad() {
   const { id } = useParams();
   const [text, setText] = useState("");
   const [debouncedText, setDebouncedText] = useState(text);
-  const BASE_URL = "https://copytext-production-28d0.up.railway.app/";
+  const BASE_URL = "https://copytext-production-28d0.up.railway.app";
 
   // Fetch initial data
   useEffect(() => {
