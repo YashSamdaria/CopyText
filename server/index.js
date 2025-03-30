@@ -12,7 +12,7 @@ const app = express();
 // ✅ Proper CORS configuration
 app.use(
   cors({
-    origin: ["https://copy-text-tau.vercel.app"], // Allow your frontend domain
+    origin: ["https://copy-text-tau.vercel.app","http://localhost:5173"], // Allow your frontend domain
     methods: "GET, POST, PUT",
     allowedHeaders: ["Content-Type"],
     credentials: true, // Allow cookies (if needed)

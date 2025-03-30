@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const BASE_URL = "https://copytext-production-28d0.up.railway.app";
+const BASE_URL = import.meta.env.VITE_BASE_URL; // Fetch from .env
 console.log("BASE_URL:", BASE_URL);
 
 export default function InputBody() {
@@ -11,11 +11,6 @@ export default function InputBody() {
   const navigate = useNavigate();
 
   const submit = async () => {
-    if (!text.trim()) {
-      toast.error("Secret key cannot be empty!", { position: "bottom-center" });
-      return;
-    }
-
     try {
       const response = await fetch(`${BASE_URL}/submit`, {
         method: "POST",
@@ -51,6 +46,12 @@ export default function InputBody() {
             className="w-full h-16 p-4 rounded-md bg-[#233554] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none text-lg"
             value={text}
             onChange={(e) => setText(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault(); // Prevents new line
+                submit(); // Calls the submit function
+              }
+            }}
           />
           <button
             className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-8 rounded-md transition-all"

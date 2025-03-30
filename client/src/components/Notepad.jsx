@@ -7,8 +7,8 @@ export default function Notepad() {
   const { id } = useParams();
   const [text, setText] = useState("");
   const [debouncedText, setDebouncedText] = useState(text);
-  const BASE_URL = "https://copytext-production-28d0.up.railway.app";
-
+  const BASE_URL = import.meta.env.VITE_BASE_URL; // Fetch from .env
+  console.log(BASE_URL)
   // Fetch initial data
   useEffect(() => {
     async function fetchData() {
