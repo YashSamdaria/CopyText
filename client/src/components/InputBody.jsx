@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const BASE_URL = "https://copytext.railway.app";
+const BASE_URL = "https://copytext-production-28d0.up.railway.app/";
 console.log("BASE_URL:", BASE_URL);
 
 export default function InputBody() {
