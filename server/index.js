@@ -8,7 +8,13 @@ import Text from "./Text.js"; // Import the Mongoose model
 
 dotenv.config();
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://copy-text-tau.vercel.app", // Allow your frontend domain
+    methods: "GET,POST,PUT",
+    credentials: true, // Allow cookies (if needed)
+  })
+);
 app.use(express.json());
 
 connectDB(); // Connect to MongoDB
